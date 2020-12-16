@@ -81,6 +81,7 @@ export class Modal extends React.Component {
 										}>
 										<span className="xMarker">X</span>
 									</button>
+
 									<button
 										type="button"
 										className="btn btn-primary"

@@ -46,29 +46,91 @@ export class Home extends React.Component {
 	setWinner = player => {
 		this.setState({ winner: player });
 		this.showWinner(player);
+		this.resetGame();
 	};
 
 	showTurn = player => {
 		this.setState({
 			message: this.state.player == "o" ? "x's Turn" : "o's Turn"
 		});
+		//Changes 'message' var based on turn
 	};
 	showWinner = player => {
 		this.setState({ message: this.state.player + " Has Won!" });
 	};
 
+	resetGame = () => {
+		this.setState({ player: "", winner: "", message: "" });
+	};
+
+	newMessage = () => {
+		if (this.state.player == "") {
+			return <Modal onSetTurn={this.setTurn} />;
+		} else {
+			if (this.state.winner == "") {
+				return (
+					<div>
+						<h1>
+							It is {this.state.player.toUpperCase()}s turn!!!!
+						</h1>
+						<button
+							type="button"
+							className="btn btn-primary"
+							data-toggle="modal"
+							data-target="#resetGame"
+							onClick={this.resetGame}>
+							Reset Game
+						</button>
+					</div>
+				);
+			} else {
+				return (
+					<div>
+						<h1>{this.state.winner.toUpperCase()} has won!!!!</h1>
+						<button
+							type="button"
+							className="btn btn-primary"
+							data-toggle="modal"
+							data-target="#resetGame"
+							onClick={this.resetGame}>
+							Reset Game
+						</button>
+					</div>
+				);
+			}
+		}
+	};
+
+	runGame = () => {
+		if (this.state.player == "") {
+			return (
+				<Game
+
+				//this comes from state
+				/>
+			);
+		} else {
+			if (this.state.winner == "") {
+				return (
+					<Game
+						prop2={this.nextTurn}
+						prop3={this.setWinner}
+						currentPlayer={this.state.player}
+						prop4={this.state.message}
+						propWinner={this.state.winner}
+						propReset={this.state.resetGame}
+
+						//this comes from state
+					/>
+				);
+			}
+		}
+	};
 	render() {
 		return (
 			<div>
-				<Modal onSetTurn={this.setTurn} />{" "}
-				<Game
-					prop2={this.nextTurn}
-					prop3={this.setWinner}
-					currentPlayer={this.state.player}
-					prop4={this.state.message}
-					propWinner={this.state.winner}
-					//this comes from state
-				/>
+				{this.newMessage()}
+				{this.runGame()}
 			</div>
 		);
 	}
